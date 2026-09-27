@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Accounts - Smart Digital Bank</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
+    <style>
+
+        /* =================================
+           PAGE
+        ================================= */
+
+        .employee-page {
+
+            width: 94%;
+
+            margin: 40px auto;
+
+        }
+
+
+        /* =================================
+           HEADER
+        ================================= */
+
+        .employee-page-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .employee-page-header h1 {
+
+            font-size: 38px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .employee-page-header p {
+
+            font-size: 18px;
+
+            margin: 0;
+
+        }
+
+
+        .employee-page-header i {
+
+            color: #00d9ff;
+
+            margin-right: 12px;
+
+        }
+
+
+        /* =================================
+           TABLE CARD
+        ================================= */
+
+        .employee-table-card {
+
+            background: rgba(255,255,255,0.10);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            overflow-x: auto;
+
+        }
+
+
+        /* =================================
+           TABLE
+        ================================= */
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th {
+
+            color: #00d9ff;
+
+            font-size: 16px;
+
+            padding: 16px;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.25);
+
+        }
+
+
+        td {
+
+            color: white;
+
+            padding: 16px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.12);
+
+        }
+
+
+        tr:hover {
+
+            background:
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        /* =================================
+           MESSAGE
+        ================================= */
+
+        #message {
+
+            text-align: center;
+
+            color: white;
+
+            font-size: 18px;
+
+            padding: 25px;
+
+        }
+
+
+        /* =================================
+           BACK BUTTON
+        ================================= */
+
+        .back-btn {
+
+            display: inline-block;
+
+            margin-top: 30px;
+
+            padding: 12px 25px;
+
+            background: rgba(255,255,255,0.12);
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            transition: 0.3s;
+
+        }
+
+
+        .back-btn:hover {
+
+            background:
+                rgba(255,255,255,0.20);
+
+        }
+
+
+        /* =================================
+           RESPONSIVE
+        ================================= */
+
+        @media(max-width: 800px) {
+
+            .employee-page-header h1 {
+
+                font-size: 30px;
+
+            }
+
+            th,
+            td {
+
+                padding: 10px;
+
+                font-size: 14px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =================================
+     TOP NAVIGATION
+================================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-building-columns"></i>
+
+        Smart Digital Bank
+
+    </div>
+
+
+    <nav>
+
+        <a href="employee-dashboard.html">
+            Home
+        </a>
+
+        <a href="employee-login.html">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =================================
+     ACCOUNTS PAGE
+================================= -->
+
+<div class="employee-page">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="employee-page-header">
+
+        <h1>
+
+            <i class="fa-solid fa-building-columns"></i>
+
+            Bank Accounts
+
+        </h1>
+
+
+        <p>
+
+            Account details registered in Smart Digital Bank
+
+        </p>
+
+    </div>
+
+
+
+    <!-- TABLE -->
+
+    <div class="employee-table-card">
+
+
+        <div id="message">
+
+            Loading accounts...
+
+        </div>
+
+
+        <table
+            id="accountTable"
+            style="display:none;"
+        >
+
+            <thead>
+
+                <tr>
+
+                    <th>Account No</th>
+
+                    <th>Customer ID</th>
+
+                    <th>Customer Name</th>
+
+                    <th>Branch ID</th>
+
+                    <th>Branch Name</th>
+
+                    <th>Account Type</th>
+
+                    <th>Balance</th>
+
+                    <th>Open Date</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="accountBody">
+
+            </tbody>
+
+        </table>
+
+
+    </div>
+
+
+
+    <!-- BACK BUTTON -->
+
+    <a
+        href="employee-dashboard.html"
+        class="back-btn"
+    >
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =================================
+   API
+================================= */
+
+const API_BASE_URL =
+    "http://127.0.0.1:5000";
+
+
+
+/* =================================
+   LOAD ACCOUNTS
+================================= */
+
+async function loadAccounts() {
+
+    try {
+
+        const response =
+            await fetch(
+                API_BASE_URL +
+                "/employee/accounts"
+            );
+
+
+        const accounts =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load accounts"
+            );
+
+        }
+
+
+        const table =
+            document.getElementById(
+                "accountTable"
+            );
+
+
+        const body =
+            document.getElementById(
+                "accountBody"
+            );
+
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+        body.innerHTML = "";
+
+
+        /* =============================
+           CHECK DATA
+        ============================= */
+
+        if (accounts.length === 0) {
+
+            message.textContent =
+                "No account records found.";
+
+            return;
+
+        }
+
+
+        /* =============================
+           ADD ACCOUNT ROWS
+        ============================= */
+
+        accounts.forEach(account => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${account.Account_No}
+                </td>
+
+                <td>
+                    ${account.Customer_ID}
+                </td>
+
+                <td>
+                    ${account.Customer_Name}
+                </td>
+
+                <td>
+                    ${account.Branch_ID}
+                </td>
+
+                <td>
+                    ${account.Branch_Name}
+                </td>
+
+                <td>
+                    ${account.Account_Type}
+                </td>
+
+                <td>
+                    ₹${account.Balance}
+                </td>
+
+                <td>
+                    ${account.Open_Date}
+                </td>
+
+            `;
+
+
+            body.appendChild(row);
+
+        });
+
+
+        /* =============================
+           SHOW TABLE
+        ============================= */
+
+        message.style.display =
+            "none";
+
+        table.style.display =
+            "table";
+
+
+    }
+
+
+    catch (error) {
+
+        console.log(error);
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "Unable to load account data.";
+
+    }
+
+}
+
+
+/* =================================
+   START
+================================= */
+
+loadAccounts();
+
+</script>
+
+
+</body>
+
+</html>

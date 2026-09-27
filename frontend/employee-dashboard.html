@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Digital Bank | Employee Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome for icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    >
+
+    <style>
+
+        /* ================================
+           EMPLOYEE DASHBOARD
+           SAME STYLE AS CUSTOMER DASHBOARD
+        ================================= */
+
+        .employee-welcome {
+            text-align: center;
+            margin-top: 55px;
+            margin-bottom: 35px;
+        }
+
+        .employee-welcome h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .employee-welcome p {
+            font-size: 20px;
+            margin: 0;
+        }
+
+
+        /* EMPLOYEE INFORMATION */
+
+        .employee-details {
+            width: 80%;
+            max-width: 900px;
+
+            margin: 0 auto 45px auto;
+
+            background: rgba(255,255,255,0.10);
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            text-align: center;
+        }
+
+        .employee-details span {
+            margin: 0 18px;
+            font-size: 17px;
+        }
+
+
+        /* CARDS */
+
+        .employee-options {
+
+            width: 94%;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 30px;
+
+        }
+
+
+        .employee-card {
+
+            background: rgba(255,255,255,0.10);
+
+            border-radius: 20px;
+
+            min-height: 180px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .employee-card:hover {
+
+            transform: translateY(-7px);
+
+            background: rgba(255,255,255,0.15);
+
+        }
+
+
+        .employee-card i {
+
+            font-size: 55px;
+
+            color: #00d9ff;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .employee-card h2 {
+
+            font-size: 20px;
+
+            margin: 0;
+
+        }
+
+
+        /* LOGOUT */
+
+        .employee-logout {
+
+            display: block;
+
+            margin: 45px auto;
+
+            padding: 12px 30px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* RESPONSIVE */
+
+        @media(max-width: 1000px) {
+
+            .employee-options {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            .employee-options {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .employee-welcome h1 {
+
+                font-size: 30px;
+
+            }
+
+            .employee-details span {
+
+                display: block;
+
+                margin: 8px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     TOP NAVIGATION
+===================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-building-columns"></i>
+
+        Smart Digital Bank
+
+    </div>
+
+
+    <nav>
+
+        <a href="employee-dashboard.html">
+            Home
+        </a>
+
+        <a href="#" onclick="employeeLogout()">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =====================================
+     WELCOME
+===================================== -->
+
+<section class="employee-welcome">
+
+    <h1>
+
+        Welcome,
+        <span id="employeeName">
+            Employee
+        </span>
+        👋
+
+    </h1>
+
+
+    <p>
+        Employee Dashboard
+    </p>
+
+</section>
+
+
+
+<!-- =====================================
+     EMPLOYEE DETAILS
+===================================== -->
+
+<div class="employee-details">
+
+    <span>
+        <strong>Employee ID:</strong>
+        <span id="employeeId"></span>
+    </span>
+
+
+    <span>
+        <strong>Position:</strong>
+        <span id="employeePosition"></span>
+    </span>
+
+
+    <span>
+        <strong>Branch:</strong>
+        <span id="employeeBranch"></span>
+    </span>
+
+</div>
+
+
+
+<!-- =====================================
+     EMPLOYEE OPTIONS
+===================================== -->
+
+<section class="employee-options">
+
+
+    <!-- CUSTOMERS -->
+
+    <div
+        class="employee-card"
+        onclick="openPage('customers')"
+    >
+
+        <i class="fa-solid fa-users"></i>
+
+        <h2>
+            Customers
+        </h2>
+
+    </div>
+
+
+
+    <!-- ACCOUNTS -->
+
+    <div
+        class="employee-card"
+        onclick="openPage('accounts')"
+    >
+
+        <i class="fa-solid fa-building-columns"></i>
+
+        <h2>
+            Bank Accounts
+        </h2>
+
+    </div>
+
+
+
+    <!-- BRANCHES -->
+
+    <div
+        class="employee-card"
+        onclick="openPage('branches')"
+    >
+
+        <i class="fa-solid fa-building"></i>
+
+        <h2>
+            Branches
+        </h2>
+
+    </div>
+
+
+
+    <!-- LOANS -->
+
+    <div
+        class="employee-card"
+        onclick="openPage('loans')"
+    >
+
+        <i class="fa-solid fa-sack-dollar"></i>
+
+        <h2>
+            Loans
+        </h2>
+
+    </div>
+
+
+
+    <!-- TRANSACTIONS -->
+
+    <div
+        class="employee-card"
+        onclick="openPage('transactions')"
+    >
+
+        <i class="fa-solid fa-credit-card"></i>
+
+        <h2>
+            Transactions
+        </h2>
+
+    </div>
+
+
+
+    <!-- SEARCH -->
+
+    <div
+        class="employee-card"
+        onclick="openPage('search')"
+    >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <h2>
+            Search
+        </h2>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================
+     LOGOUT
+===================================== -->
+
+<button
+    class="employee-logout"
+    onclick="employeeLogout()"
+>
+
+    Logout
+
+</button>
+
+
+
+<script>
+
+
+/* =====================================
+   GET EMPLOYEE DETAILS
+===================================== */
+
+const employeeId =
+    localStorage.getItem("employee_id");
+
+const employeeName =
+    localStorage.getItem("employee_name");
+
+const employeePosition =
+    localStorage.getItem("employee_position");
+
+const employeeBranch =
+    localStorage.getItem("employee_branch");
+
+
+
+/* =====================================
+   DISPLAY EMPLOYEE DETAILS
+===================================== */
+
+document.getElementById("employeeName").textContent =
+    employeeName || "Employee";
+
+
+document.getElementById("employeeId").textContent =
+    employeeId || "";
+
+
+document.getElementById("employeePosition").textContent =
+    employeePosition || "";
+
+
+document.getElementById("employeeBranch").textContent =
+    employeeBranch || "";
+
+
+
+/* =====================================
+   OPEN PAGES
+===================================== */
+
+function openPage(page) {
+
+    if (page === "customers") {
+
+        window.location.href =
+            "employee-customers.html";
+
+    }
+
+    else if (page === "accounts") {
+
+        window.location.href =
+            "employee-accounts.html";
+
+    }
+
+    else if (page === "branches") {
+
+        window.location.href =
+            "employee-branches.html";
+
+    }
+
+    else if (page === "loans") {
+
+        window.location.href =
+            "employee-loans.html";
+
+    }
+
+    else if (page === "transactions") {
+
+        window.location.href =
+            "employee-transactions.html";
+
+    }
+
+    else if (page === "search") {
+
+        window.location.href =
+            "employee-search.html";
+
+    }
+
+}
+
+
+
+/* =====================================
+   LOGOUT
+===================================== */
+
+function employeeLogout() {
+
+    localStorage.removeItem("employee_id");
+
+    localStorage.removeItem("employee_name");
+
+    localStorage.removeItem("employee_position");
+
+    localStorage.removeItem("employee_branch");
+
+    window.location.href =
+        "employee-login.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

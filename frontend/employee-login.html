@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Login - Smart Digital Bank</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        }
+
+        .login-box {
+            width: 400px;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .bank-icon {
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #203a43;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2c5364;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #203a43;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2c5364;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back a {
+            color: #203a43;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            text-decoration: underline;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="bank-icon">🏦</div>
+
+        <h1>Employee Login</h1>
+
+        <p class="subtitle">
+            Smart Digital Bank
+        </p>
+
+        <form id="employeeLoginForm">
+
+            <label for="employeeId">
+                Employee ID
+            </label>
+
+            <input
+                type="text"
+                id="employeeId"
+                placeholder="Enter Employee ID"
+                required
+            >
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter Password"
+                required
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <p id="message"></p>
+
+        <div class="back">
+            <a href="login.html">
+                ← Back to Customer Login
+            </a>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const API_BASE_URL = "http://127.0.0.1:5000";
+
+        document.getElementById("employeeLoginForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const employeeId =
+                document.getElementById("employeeId").value.trim();
+
+            const password =
+                document.getElementById("password").value.trim();
+
+            const message =
+                document.getElementById("message");
+
+            message.textContent = "Logging in...";
+            message.style.color = "#333";
+
+            try {
+
+                const response = await fetch(
+                    API_BASE_URL + "/employee-login",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            employee_id: employeeId,
+                            password: password
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (data.status === "success") {
+
+                    localStorage.setItem(
+                        "employee_id",
+                        data.employee_id
+                    );
+
+                    localStorage.setItem(
+                        "employee_name",
+                        data.name
+                    );
+
+                    localStorage.setItem(
+                        "employee_position",
+                        data.position
+                    );
+
+                    localStorage.setItem(
+                        "employee_branch",
+                        data.branch
+                    );
+
+                    window.location.href =
+                        "employee-dashboard.html";
+
+                } else {
+
+                    message.textContent =
+                        data.message || "Invalid Employee ID or Password.";
+
+                    message.style.color = "red";
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Unable to connect to server.";
+
+                message.style.color = "red";
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

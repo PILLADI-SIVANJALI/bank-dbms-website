@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mini Statement | Smart Digital Bank</title>
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+    <style>
+
+        .statement-container
+        {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 35px;
+
+            background: rgba(255,255,255,0.10);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.2);
+        }
+
+
+        .statement-icon
+        {
+            font-size: 55px;
+
+            text-align: center;
+
+            margin-bottom: 15px;
+
+            color: #00d9ff;
+        }
+
+
+        .statement-container h1
+        {
+            text-align: center;
+
+            margin-bottom: 10px;
+        }
+
+
+        .subtitle
+        {
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        .account-info
+        {
+            text-align: center;
+
+            font-size: 18px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .account-info span
+        {
+            font-weight: bold;
+
+            color: #00d9ff;
+        }
+
+
+        .balance
+        {
+            text-align: center;
+
+            font-size: 25px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .balance span
+        {
+            font-weight: bold;
+
+            color: #00d9ff;
+        }
+
+
+        .table-container
+        {
+            width: 100%;
+
+            overflow-x: auto;
+
+            border-radius: 10px;
+        }
+
+
+        table
+        {
+            width: 100%;
+
+            min-width: 950px;
+
+            border-collapse: collapse;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+        }
+
+
+        th
+        {
+            background: #00cfee;
+
+            color: #061b3a;
+
+            padding: 15px;
+
+            text-align: center;
+
+            font-size: 15px;
+        }
+
+
+        td
+        {
+            padding: 14px;
+
+            text-align: center;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            color: white;
+        }
+
+
+        tr:hover
+        {
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        .credit
+        {
+            color: #00ff55;
+
+            font-weight: bold;
+        }
+
+
+        .debit
+        {
+            color: #ff3b30;
+
+            font-weight: bold;
+        }
+
+
+        .mode
+        {
+            font-weight: bold;
+        }
+
+
+        .status
+        {
+            color: #00ff55;
+
+            font-weight: bold;
+        }
+
+
+        .no-transactions
+        {
+            text-align: center;
+
+            padding: 30px;
+
+            font-size: 18px;
+        }
+
+
+        .back-button
+        {
+            display: block;
+
+            width: max-content;
+
+            margin: 30px auto 0;
+
+            padding: 12px 25px;
+
+            background: #00cfee;
+
+            color: #061b3a;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .back-button:hover
+        {
+            opacity: 0.85;
+        }
+
+
+        @media(max-width: 800px)
+        {
+            .statement-container
+            {
+                margin: 20px;
+
+                padding: 15px;
+            }
+
+            table
+            {
+                min-width: 950px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header>
+
+    <div class="logo">
+
+        <i class="fa-solid fa-building-columns"></i>
+
+        <span>
+            Smart Digital Bank
+        </span>
+
+    </div>
+
+
+    <nav>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="profile.html">
+            Profile
+        </a>
+
+        <a href="#" onclick="logout()">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ================= STATEMENT ================= -->
+
+<section class="statement-container">
+
+
+    <div class="statement-icon">
+
+        <i class="fa-solid fa-file-lines"></i>
+
+    </div>
+
+
+    <h1>
+        Mini Statement
+    </h1>
+
+
+    <p class="subtitle">
+
+        Recent account transactions
+
+    </p>
+
+
+    <!-- ACCOUNT NUMBER -->
+
+    <div class="account-info">
+
+        Account Number:
+
+        <span id="accountNumber">
+            Loading...
+        </span>
+
+    </div>
+
+
+    <!-- CURRENT BALANCE -->
+
+    <div class="balance">
+
+        Available Balance:
+
+        <span id="currentBalance">
+            ₹0
+        </span>
+
+    </div>
+
+
+    <!-- ================= TABLE ================= -->
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Transaction ID
+                    </th>
+
+                    <th>
+                        Account No.
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Transaction
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Mode
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="transactionTable">
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Loading transactions...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- BACK BUTTON -->
+
+    <a
+        href="dashboard.html"
+        class="back-button">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    © 2026 Smart Digital Bank
+
+</footer>
+
+
+<script src="script.js"></script>
+
+
+<script>
+
+
+function loadStatement()
+{
+
+    /* ================= GET ACCOUNT ================= */
+
+    let account =
+        localStorage.getItem("account");
+
+
+    let balance =
+        localStorage.getItem("balance");
+
+
+    /* ================= CHECK LOGIN ================= */
+
+    if(!account)
+    {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    /* ================= SHOW ACCOUNT NUMBER ================= */
+
+    document.getElementById(
+        "accountNumber"
+    ).innerText = account;
+
+
+    /* ================= SHOW BALANCE ================= */
+
+    document.getElementById(
+        "currentBalance"
+    ).innerText =
+        "₹" + (balance || "0");
+
+
+    /* ================= GET TRANSACTIONS ================= */
+
+    fetch(
+        "http://127.0.0.1:5000/transactions?account="
+        + encodeURIComponent(account)
+    )
+
+
+    .then(response =>
+    {
+
+        if(!response.ok)
+        {
+
+            throw new Error(
+                "Unable to load transactions"
+            );
+
+        }
+
+
+        return response.json();
+
+    })
+
+
+    .then(data =>
+    {
+
+        let table =
+            document.getElementById(
+                "transactionTable"
+            );
+
+
+        /* ================= HANDLE RESPONSE ================= */
+
+        let transactions = data;
+
+
+        if(
+            data &&
+            data.transactions
+        )
+        {
+
+            transactions =
+                data.transactions;
+
+        }
+
+
+        /* ================= NO TRANSACTIONS ================= */
+
+        if(
+            !Array.isArray(transactions) ||
+            transactions.length === 0
+        )
+        {
+
+            table.innerHTML =
+
+            `
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="no-transactions">
+
+                    No transactions found.
+
+                </td>
+
+            </tr>
+            `;
+
+            return;
+
+        }
+
+
+        /* ================= CLEAR TABLE ================= */
+
+        table.innerHTML = "";
+
+
+        /* ================= DISPLAY TRANSACTIONS ================= */
+
+        transactions.forEach(
+            transaction =>
+        {
+
+            /* ---------- TRANSACTION ID ---------- */
+
+            let transactionId =
+
+                transaction.Transaction_ID ||
+
+                transaction.transaction_id ||
+
+                transaction.id ||
+
+                "-";
+
+
+            /* ---------- ACCOUNT NUMBER ---------- */
+
+            let accountNumber =
+
+                transaction.Account_No ||
+
+                transaction.account_no ||
+
+                transaction.account ||
+
+                account;
+
+
+            /* ---------- TRANSACTION TYPE ---------- */
+
+            let type =
+
+                transaction.Transaction_Type ||
+
+                transaction.transaction_type ||
+
+                transaction.transaction ||
+
+                transaction.type ||
+
+                "Transaction";
+
+
+            /* ---------- AMOUNT ---------- */
+
+            let amount =
+
+                parseFloat(
+
+                    transaction.Amount ||
+
+                    transaction.amount ||
+
+                    0
+
+                );
+
+
+            /* ---------- DATE ---------- */
+
+            let date =
+
+                transaction.Transaction_Date ||
+
+                transaction.transaction_date ||
+
+                transaction.date ||
+
+                "";
+
+
+            /* ---------- CREDIT / DEBIT ---------- */
+
+            let isCredit =
+
+                type === "Deposit" ||
+
+                type === "Transfer Received";
+
+
+            let amountClass =
+
+                isCredit
+
+                ? "credit"
+
+                : "debit";
+
+
+            let sign =
+
+                isCredit
+
+                ? "+"
+
+                : "-";
+
+
+            /* ---------- MODE ---------- */
+
+            let mode =
+
+                isCredit
+
+                ? "Credited"
+
+                : "Debited";
+
+
+            /* ---------- CREATE ROW ---------- */
+
+            let row =
+                document.createElement("tr");
+
+
+            row.innerHTML =
+
+            `
+
+                <td>
+                    ${transactionId}
+                </td>
+
+
+                <td>
+                    ${accountNumber}
+                </td>
+
+
+                <td>
+                    ${date}
+                </td>
+
+
+                <td>
+                    ${type}
+                </td>
+
+
+                <td class="${amountClass}">
+
+                    ${sign} ₹${amount.toFixed(2)}
+
+                </td>
+
+
+                <td class="mode">
+
+                    ${mode}
+
+                </td>
+
+
+                <td class="status">
+
+                    Successful
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        });
+
+    })
+
+
+    /* ================= ERROR ================= */
+
+    .catch(error =>
+    {
+
+        console.log(
+            "Statement Error:",
+            error
+        );
+
+
+        document.getElementById(
+            "transactionTable"
+        ).innerHTML =
+
+        `
+
+        <tr>
+
+            <td
+                colspan="7"
+                class="no-transactions">
+
+                Cannot connect to Flask server.
+
+                <br><br>
+
+                Make sure Flask is running
+                on port 5000.
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* ================= LOAD PAGE ================= */
+
+loadStatement();
+
+
+</script>
+
+
+</body>
+
+</html>
